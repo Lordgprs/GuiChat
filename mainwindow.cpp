@@ -24,6 +24,10 @@ MainWindow::MainWindow(size_t userId, QString userName,
   auto timer{new QTimer{this}};
   connect(timer, &QTimer::timeout, this, &MainWindow::updateChats);
   timer->start(MainWindow::TIMEOUT);
+  //  connect(ui->actionClose, &QAction::triggered, this,
+  //          &MainWindow::on_actionClose_triggered);
+  //  connect(ui->actionNew_instance, &QAction::triggered, this,
+  //          &MainWindow::on_actionNew_instance_triggered);
 }
 
 MainWindow::~MainWindow() {
@@ -39,7 +43,7 @@ MainWindow *MainWindow::createClient(std::shared_ptr<Database> dbPtr) {
   if (result == QDialog::Rejected) {
     return nullptr;
   }
-  auto w{new MainWindow(s.userId(), s.userName(), dbPtr)};
+  auto w{new MainWindow(s.userId(), s.userName(), s.getDatabase())};
   w->setAttribute(Qt::WA_DeleteOnClose);
   return w;
 }
@@ -87,7 +91,9 @@ void MainWindow::updateChats() {
   for (const auto &msg : chatMessages) {
     chat.append(QString::fromStdString(msg) + '\n');
   }
-  ui->commonChatBrowser->setText(chat);
+  if (ui->commonChatBrowser->toPlainText() != chat) {
+    ui->commonChatBrowser->setText(chat);
+  }
 
   chat.clear();
   auto privateMessages = m_dbPtr->getPrivateMessage(m_userId);
@@ -111,7 +117,8 @@ void MainWindow::updateChats() {
     }
     chat.append(prefix + QString::fromStdString(msg.getText() + '\n'));
   }
-  ui->privateChatBrowser->setText(chat);
+  if (ui->privateChatBrowser->toPlainText() != chat)
+    ui->privateChatBrowser->setText(chat);
 }
 
 void MainWindow::on_actionNew_instance_triggered() {

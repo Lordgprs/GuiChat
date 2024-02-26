@@ -8,6 +8,14 @@ using namespace std;
 int main(int argc, char *argv[]) {
   QApplication a(argc, argv);
 
+  QTranslator myappTranslator;
+  myappTranslator.load("translations/my_ru.qm");
+  a.installTranslator(&myappTranslator);
+
+  QTranslator qtTranslator;
+  qtTranslator.load("translations/my_ru.qm");
+  a.installTranslator(&qtTranslator);
+
   //	cout << "Usage:" << endl;
   //	cout << "!login[username][password] - log in" << endl;
   //	cout << "!logout - log out" << endl;

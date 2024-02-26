@@ -42,6 +42,11 @@ void StartScreen::onLoggedIn(uint userId, QString userName) {
 
 void StartScreen::onRejectRequested() { reject(); }
 
+std::shared_ptr<Database> StartScreen::getDatabase() const
+{
+  return m_dbPtr;
+}
+
 const QString &StartScreen::userName() const { return m_userName; }
 
 int StartScreen::userId() const { return m_userId; }

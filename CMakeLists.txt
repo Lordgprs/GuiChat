@@ -21,7 +21,22 @@ foreach(QtModule IN LISTS Qt5Modules)
     list(APPEND CHAT_LIBRARIES Qt5::${QtModule})
 endforeach(QtModule)
 
-find_package(Qt5 COMPONENTS ${Qt5Modules} REQUIRED)
+find_package(Qt5 COMPONENTS ${Qt5Modules} REQUIRED LinguistTools)
+
+set(TS_FILES
+    ${PROJECT_SOURCE_DIR}/translations/my_ru.ts
+)
+file(GLOB_RECURSE TS_SOURCES "*.cpp" "*.h" "*.ui")
+add_custom_target(translations)
+foreach(_ts_file ${TS_FILES})
+    get_filename_component(_ts_name ${_ts_file} NAME_WE)
+    add_custom_command(OUTPUT "${_ts_file}"
+        DEPENDS "${TS_SOURCES}"
+        COMMAND ${Qt5_LUPDATE_EXECUTABLE} -recursive ${PROJECT_SOURCE_DIR} -ts ${_ts_file}
+    )
+    add_custom_target(translate_${ts_name} DEPENDS ${_ts_file})
+    add_dependencies(translations translate_${ts_name})
+endforeach()
 
 file(GLOB_RECURSE SRC_FILES sources/*.cpp)
 file(GLOB_RECURSE HEADERS_FILES sources/*.h)
@@ -32,11 +47,12 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
 
+qt5_add_translation(QM_FILES ${TS_FILES})
 qt5_wrap_ui(QUI ${UI_FILES})
 qt5_add_resources(QRC ${RC_FILES})
 
 add_executable(Chat
-    ${SRC_FILES} ${HEADERS_FILES} ${RC_FILES} ${UI_FILES}
+    ${SRC_FILES} ${HEADERS_FILES} ${RC_FILES} ${UI_FILES} ${QM_FILES}
     ${PROJECT_SOURCE_DIR}/mainwindow.h
     ${PROJECT_SOURCE_DIR}/mainwindow.cpp
     ${PROJECT_SOURCE_DIR}/mainwindow.ui

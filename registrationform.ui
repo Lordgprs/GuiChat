@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Form</string>
+   <string>Register</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
@@ -90,10 +90,10 @@
   </layout>
  </widget>
  <tabstops>
-  <tabstop>passwordConfirmEdit</tabstop>
-  <tabstop>loginButton</tabstop>
   <tabstop>loginEdit</tabstop>
   <tabstop>passwordEdit</tabstop>
+  <tabstop>passwordConfirmEdit</tabstop>
+  <tabstop>loginButton</tabstop>
  </tabstops>
  <resources/>
  <connections/>
