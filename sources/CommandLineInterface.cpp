@@ -164,7 +164,7 @@ void CommandLineInterface::callPM(std::string message) {
 }
 
 void CommandLineInterface::callGetPM() {
-  std::vector<Message> msgs = _db.getPrivateMessage(_currentLoginID);
+  std::vector<Message> msgs = _db.getPrivateMessages(_currentLoginID);
   std::cout << "private messages:" << std::endl;
   for (auto &m : msgs) {
     std::cout << "<" << m.getSender() << ">: " << m.getText() << std::endl;
@@ -184,7 +184,7 @@ void CommandLineInterface::showChatMsgs() {
 bool CommandLineInterface::shouldExit() { return _exit; }
 
 void CommandLineInterface::showCountPM() {
-  std::vector<Message> pm = _db.getPrivateMessage(_currentLoginID);
+  std::vector<Message> pm = _db.getPrivateMessages(_currentLoginID);
   int countpm = pm.size();
   if (countpm)
     std::cout << "You have " << pm.size() << " private messages." << std::endl;

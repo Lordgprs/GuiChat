@@ -46,43 +46,43 @@
     <name>MainWindow</name>
     <message>
         <location filename="../mainwindow.ui" line="14"/>
-        <location filename="../build/debug/Chat_autogen/include/ui_mainwindow.h" line="122"/>
+        <location filename="../build/debug/Chat_autogen/include/ui_mainwindow.h" line="133"/>
         <source>Chat</source>
         <translation>Чат</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="23"/>
-        <location filename="../build/debug/Chat_autogen/include/ui_mainwindow.h" line="125"/>
+        <location filename="../build/debug/Chat_autogen/include/ui_mainwindow.h" line="136"/>
         <source>Your message:</source>
         <translation>Ваше сообщение:</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="33"/>
-        <location filename="../build/debug/Chat_autogen/include/ui_mainwindow.h" line="126"/>
+        <location filename="../build/debug/Chat_autogen/include/ui_mainwindow.h" line="137"/>
         <source>Send to all</source>
         <translation>Послать всем</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="40"/>
-        <location filename="../build/debug/Chat_autogen/include/ui_mainwindow.h" line="127"/>
+        <location filename="../build/debug/Chat_autogen/include/ui_mainwindow.h" line="138"/>
         <source>Send private</source>
         <translation>Личное сообщение</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="68"/>
-        <location filename="../build/debug/Chat_autogen/include/ui_mainwindow.h" line="128"/>
+        <location filename="../mainwindow.ui" line="82"/>
+        <location filename="../build/debug/Chat_autogen/include/ui_mainwindow.h" line="140"/>
         <source>Main menu</source>
         <translation>Меню</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="78"/>
-        <location filename="../build/debug/Chat_autogen/include/ui_mainwindow.h" line="123"/>
+        <location filename="../mainwindow.ui" line="92"/>
+        <location filename="../build/debug/Chat_autogen/include/ui_mainwindow.h" line="134"/>
         <source>New instance...</source>
         <translation>Новый экземпляр...</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="83"/>
-        <location filename="../build/debug/Chat_autogen/include/ui_mainwindow.h" line="124"/>
+        <location filename="../mainwindow.ui" line="97"/>
+        <location filename="../build/debug/Chat_autogen/include/ui_mainwindow.h" line="135"/>
         <source>Close</source>
         <translation>Закрыть</translation>
     </message>
@@ -99,17 +99,17 @@
         <translation type="vanished">Закрыть</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="111"/>
+        <location filename="../mainwindow.cpp" line="110"/>
         <source>self</source>
         <translation>Я</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="113"/>
+        <location filename="../mainwindow.cpp" line="112"/>
         <source>you to</source>
         <translation>Вы для</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="119"/>
+        <location filename="../mainwindow.cpp" line="117"/>
         <source> to you: </source>
         <translation> для вас: </translation>
     </message>
@@ -117,8 +117,19 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../sources/Test.cpp" line="45"/>
+        <location filename="../sources/Test.cpp" line="26"/>
         <source>Fatal error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../sources/Test.cpp" line="29"/>
+        <location filename="../sources/Test.cpp" line="45"/>
+        <source>Database error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../sources/Test.cpp" line="32"/>
+        <source>Unknown error</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

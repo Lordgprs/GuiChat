@@ -83,11 +83,4 @@ void StartScreen::loadSettings() {
         "cannot retrieve database user password, check configuration file"};
   }
   _params.db_password = db_password.value<QString>();
-  //  _settings->setValue("DBName", "chat");
-  //  _settings->setValue("DBHost", "127.0.0.1");
-  //  _settings->setValue("DBUser", "chat");
-  //  _settings->setValue("DBPassword", "12345");
-  //  _settings->endGroup();
-  //  _settings.reset();
-  QMessageBox::information(nullptr, "DB name", _params.db_name);
 }

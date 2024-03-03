@@ -1,11 +1,11 @@
 #include "mainwindow.h"
 #include "Database.h"
-#include "qmessagebox.h"
 #include "startscreen.h"
 #include "ui_mainwindow.h"
 #include <QDialog>
 #include <QDialogButtonBox>
 #include <QListWidget>
+#include <QMessageBox>
 #include <QTimer>
 #include <QVBoxLayout>
 #include <iostream>
@@ -15,18 +15,15 @@ size_t MainWindow::kInstanceCount = 0;
 MainWindow::MainWindow(int userId, QString userName,
                        std::shared_ptr<Database> dbPtr, QWidget *parent)
     : QMainWindow(parent),
-      ui(new Ui::MainWindow), _dbPtr{
-                                dbPtr}, _userId{userId}, _userName{userName} {
+      ui(new Ui::MainWindow), _dbPtr{dbPtr}, _userId{userId}, _userName{
+                                                                  userName} {
   if (!dbPtr) {
     throw std::runtime_error{"database is not valid"};
   }
   ui->setupUi(this);
+  ui->userNameLabel->setText(_userName);
+  setWindowTitle("Chat: " + _userName);
   ++kInstanceCount;
-  //  if (dbPtr) {
-  //    _dbPtr = dbPtr;
-  //  } else {
-  //    _dbPtr = std::make_shared<Database>();
-  //  }
   auto timer{new QTimer{this}};
   connect(timer, &QTimer::timeout, this, &MainWindow::updateChats);
   timer->start(MainWindow::TIMEOUT);
@@ -99,26 +96,28 @@ void MainWindow::updateChats() {
   }
 
   chat.clear();
-  auto privateMessages = _dbPtr->getPrivateMessage(_userId);
+  auto privateMessages = _dbPtr->getPrivateMessages(_userId);
   for (const auto &msg : privateMessages) {
     if (msg.getSender() != _userName.toStdString() &&
         msg.getDest() != _userId) {
       continue;
     }
+    QString timestamp{QString::fromStdString(msg.getTime()).append(" ")};
     QString prefix;
+
     if (_userName.toStdString() == msg.getSender() &&
         _userId == msg.getDest()) {
       prefix = tr("self") + ": ";
     } else if (_userName.toStdString() == msg.getSender()) {
-      prefix = tr("you to") + ": " +
-               QString(" <%1>: ").arg(
-                   QString::fromStdString(_dbPtr->getUserName(msg.getDest())));
+      prefix = tr("you to") + QString(" <%1>: ").arg(QString::fromStdString(
+                                  _dbPtr->getUserName(msg.getDest())));
     } else {
       prefix = QString("<%1>").arg(
                    QString::fromStdString(_dbPtr->getUserName(msg.getDest()))) +
                tr(" to you: ");
     }
-    chat.append(prefix + QString::fromStdString(msg.getText() + '\n'));
+    chat.append(timestamp + prefix +
+                QString::fromStdString(msg.getText() + '\n'));
   }
   if (ui->privateChatBrowser->toPlainText() != chat)
     ui->privateChatBrowser->setText(chat);
