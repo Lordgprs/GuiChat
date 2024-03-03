@@ -3,8 +3,11 @@
 
 #include "Database.h"
 #include <QMainWindow>
+#include <QSettings>
 #include <chrono>
 #include <memory>
+
+using namespace std::chrono_literals;
 
 namespace Ui {
 class MainWindow;
@@ -14,7 +17,7 @@ class MainWindow : public QMainWindow {
   Q_OBJECT
 
 public:
-  explicit MainWindow(size_t userId, QString userName,
+  explicit MainWindow(int userId, QString userName,
                       std::shared_ptr<Database> dbPtr = nullptr,
                       QWidget *parent = nullptr);
   ~MainWindow();
@@ -31,9 +34,10 @@ private slots:
 
 private:
   Ui::MainWindow *ui;
-  std::shared_ptr<Database> m_dbPtr;
-  size_t m_userId;
-  QString m_userName;
+  std::shared_ptr<Database> _dbPtr;
+  int _userId;
+  QString _userName;
+  std::shared_ptr<QSettings> _settings;
   const std::chrono::milliseconds TIMEOUT{50ms};
 };
 

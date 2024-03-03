@@ -3,11 +3,19 @@
 
 #include "Database.h"
 #include <QDialog>
+#include <QSettings>
 #include <memory>
 
 namespace Ui {
 class StartScreen;
 }
+
+struct ConfigurationParameters {
+  QString db_name;
+  QString db_host;
+  QString db_user;
+  QString db_password;
+};
 
 class StartScreen : public QDialog {
   Q_OBJECT
@@ -30,10 +38,14 @@ public slots:
   void onRejectRequested();
 
 private:
+  void loadSettings();
   Ui::StartScreen *ui;
-  int m_userId;
-  QString m_userName;
-  std::shared_ptr<Database> m_dbPtr;
+  int _userId;
+  QString _userName;
+  ConfigurationParameters _params;
+  std::shared_ptr<Database> _dbPtr;
+  std::shared_ptr<QSettings> _settings;
+  const char *const CONFIG_FILE_NAME{"chat.conf"};
 };
 
 #endif // STARTSCREEN_H

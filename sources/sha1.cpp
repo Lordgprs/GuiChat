@@ -10,7 +10,7 @@ uint bring_to_human_view(uint val) {
          ((val & 0x00FF0000) >> 8) | ((val & 0xFF000000) >> 24);
 }
 
-Hash sha1(const string &message) {
+Hash sha1(const std::string &message) {
   uint msize_bytes = message.length();
   //инициализация
   uint A = H[0];

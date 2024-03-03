@@ -16,7 +16,7 @@ if ( MSVC )
 endif()
 
 set(CHAT_LIBRARIES)
-set(Qt5Modules Core Widgets)
+set(Qt5Modules Core Widgets Sql)
 foreach(QtModule IN LISTS Qt5Modules)
     list(APPEND CHAT_LIBRARIES Qt5::${QtModule})
 endforeach(QtModule)

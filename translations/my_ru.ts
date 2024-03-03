@@ -32,12 +32,12 @@
         <translation type="vanished">Войти в чат</translation>
     </message>
     <message>
-        <location filename="../loginform.cpp" line="19"/>
+        <location filename="../loginform.cpp" line="26"/>
         <source>Error</source>
         <translation>Ошибка</translation>
     </message>
     <message>
-        <location filename="../loginform.cpp" line="19"/>
+        <location filename="../loginform.cpp" line="26"/>
         <source>Error: password is wrong</source>
         <translation>Ошибка: неверный пароль</translation>
     </message>
@@ -99,19 +99,27 @@
         <translation type="vanished">Закрыть</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="108"/>
+        <location filename="../mainwindow.cpp" line="111"/>
         <source>self</source>
         <translation>Я</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="110"/>
+        <location filename="../mainwindow.cpp" line="113"/>
         <source>you to</source>
         <translation>Вы для</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="116"/>
+        <location filename="../mainwindow.cpp" line="119"/>
         <source> to you: </source>
         <translation> для вас: </translation>
+    </message>
+</context>
+<context>
+    <name>QObject</name>
+    <message>
+        <location filename="../sources/Test.cpp" line="45"/>
+        <source>Fatal error</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -151,24 +159,24 @@
         <translation type="vanished">Регистрация</translation>
     </message>
     <message>
-        <location filename="../registrationform.cpp" line="18"/>
-        <location filename="../registrationform.cpp" line="26"/>
-        <location filename="../registrationform.cpp" line="29"/>
+        <location filename="../registrationform.cpp" line="25"/>
+        <location filename="../registrationform.cpp" line="33"/>
+        <location filename="../registrationform.cpp" line="36"/>
         <source>Error</source>
         <translation>Ошибка</translation>
     </message>
     <message>
-        <location filename="../registrationform.cpp" line="19"/>
+        <location filename="../registrationform.cpp" line="26"/>
         <source>Error: passwords don&apos;t match</source>
         <translation>Ошибка: пароли не совпадают</translation>
     </message>
     <message>
-        <location filename="../registrationform.cpp" line="26"/>
+        <location filename="../registrationform.cpp" line="33"/>
         <source>Incorrect login</source>
         <translation>Некорректный логин</translation>
     </message>
     <message>
-        <location filename="../registrationform.cpp" line="29"/>
+        <location filename="../registrationform.cpp" line="36"/>
         <source>Login already exists;</source>
         <translation>Логин уже существует</translation>
     </message>

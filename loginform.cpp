@@ -4,6 +4,13 @@
 
 LoginForm::LoginForm(QWidget *parent) : QWidget(parent), ui(new Ui::LoginForm) {
   ui->setupUi(this);
+  auto button_ok{ui->buttonBox->button(QDialogButtonBox::Ok)};
+  auto button_cancel{ui->buttonBox->button(QDialogButtonBox::Cancel)};
+
+  button_cancel->setAutoDefault(false);
+  button_cancel->setDefault(false);
+  button_ok->setAutoDefault(true);
+  button_ok->setDefault(true);
 }
 
 LoginForm::~LoginForm() { delete ui; }

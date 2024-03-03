@@ -1,38 +1,40 @@
 #pragma once
 #include <string>
 
-using namespace std;
+// using namespace std;
 
 /*
   проверяет, что строка начинается с шаблона
 */
-bool startWith(string tmpl, string& s);
+bool startWith(std::string tmpl, std::string &s);
 
 /*
   проверяет, что строка начинается с шаблона
   версия для c-style строки (нужно для оптимизации других функций)
 */
-bool startWith(string tmpl, const char* s);
+bool startWith(std::string tmpl, const char *s);
 
 /*
-  находит позицию начиная с которой встречается шаблон. Возвращает -1 если шаблона нет.
+  находит позицию начиная с которой встречается шаблон. Возвращает -1 если
+  шаблона нет.
 */
-int findFirst(string tmpl, string& s);
+int findFirst(std::string tmpl, std::string &s);
 
 /*
-  делит строку на подстроку до шаблона (которую возвращает) и после (до которой обрезает переданную по ссылке)
+  делит строку на подстроку до шаблона (которую возвращает) и после (до которой
+  обрезает переданную по ссылке)
 */
-string splitBy(string tmpl, string& s);
+std::string splitBy(std::string tmpl, std::string &s);
 
 /*
   удаляет строку до шаблона. При несовпадении очищает строку полностью.
 */
-void skipuntil(string tmpl, string& s);
+void skipuntil(std::string tmpl, std::string &s);
 
 /*
   возвращает участок строки от шаблона from до шаблона to
 */
-string segment(string from, string to, string s);
+std::string segment(std::string from, std::string to, std::string s);
 
 /*
   определяет, является ли символ буквой
@@ -47,4 +49,4 @@ bool isDigit(char c);
 /*
   проверяет корректность строки в качестве имени пользователя
 */
-bool correctName(string s);
+bool correctName(std::string s);

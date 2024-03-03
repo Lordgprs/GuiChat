@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include "Database.h"
+#include "qmessagebox.h"
 #include "startscreen.h"
 #include "ui_mainwindow.h"
 #include <QDialog>
@@ -7,27 +8,28 @@
 #include <QListWidget>
 #include <QTimer>
 #include <QVBoxLayout>
+#include <iostream>
 
 size_t MainWindow::kInstanceCount = 0;
 
-MainWindow::MainWindow(size_t userId, QString userName,
+MainWindow::MainWindow(int userId, QString userName,
                        std::shared_ptr<Database> dbPtr, QWidget *parent)
     : QMainWindow(parent),
-      ui(new Ui::MainWindow), m_userId{userId}, m_userName{userName} {
+      ui(new Ui::MainWindow), _dbPtr{
+                                dbPtr}, _userId{userId}, _userName{userName} {
+  if (!dbPtr) {
+    throw std::runtime_error{"database is not valid"};
+  }
   ui->setupUi(this);
   ++kInstanceCount;
-  if (dbPtr) {
-    m_dbPtr = dbPtr;
-  } else {
-    m_dbPtr = std::make_shared<Database>();
-  }
+  //  if (dbPtr) {
+  //    _dbPtr = dbPtr;
+  //  } else {
+  //    _dbPtr = std::make_shared<Database>();
+  //  }
   auto timer{new QTimer{this}};
   connect(timer, &QTimer::timeout, this, &MainWindow::updateChats);
   timer->start(MainWindow::TIMEOUT);
-  //  connect(ui->actionClose, &QAction::triggered, this,
-  //          &MainWindow::on_actionClose_triggered);
-  //  connect(ui->actionNew_instance, &QAction::triggered, this,
-  //          &MainWindow::on_actionNew_instance_triggered);
 }
 
 MainWindow::~MainWindow() {
@@ -43,7 +45,8 @@ MainWindow *MainWindow::createClient(std::shared_ptr<Database> dbPtr) {
   if (result == QDialog::Rejected) {
     return nullptr;
   }
-  auto w{new MainWindow(s.userId(), s.userName(), s.getDatabase())};
+  dbPtr = s.getDatabase();
+  auto w{new MainWindow(s.userId(), s.userName(), dbPtr)};
   w->setAttribute(Qt::WA_DeleteOnClose);
   return w;
 }
@@ -53,8 +56,8 @@ void MainWindow::on_messageLineEdit_returnPressed() {
 }
 
 void MainWindow::on_sendMessageButton_clicked() {
-  m_dbPtr->addChatMessage(m_userName.toStdString(),
-                          ui->messageLineEdit->text().toStdString());
+  _dbPtr->addChatMessage(_userName.toStdString(),
+                         ui->messageLineEdit->text().toStdString());
 }
 
 void MainWindow::on_privateMessageSendButton_clicked() {
@@ -71,7 +74,7 @@ void MainWindow::on_privateMessageSendButton_clicked() {
   connect(buttonBox, &QDialogButtonBox::accepted, &dial, &QDialog::accept);
   connect(buttonBox, &QDialogButtonBox::rejected, &dial, &QDialog::reject);
 
-  auto userList{m_dbPtr->getUserList()};
+  auto userList{_dbPtr->getUserList()};
   for (const auto &user : userList) {
     userListWgt->addItem(QString::fromStdString(user));
   }
@@ -79,14 +82,14 @@ void MainWindow::on_privateMessageSendButton_clicked() {
 
   auto result{dial.exec()};
   if (result == QDialog::Accepted && userListWgt->currentItem()) {
-    m_dbPtr->addPrivateMessage(m_userName.toStdString(),
-                               userListWgt->currentItem()->text().toStdString(),
-                               ui->messageLineEdit->text().toStdString());
+    _dbPtr->addPrivateMessage(_userName.toStdString(),
+                              userListWgt->currentItem()->text().toStdString(),
+                              ui->messageLineEdit->text().toStdString());
   }
 }
 
 void MainWindow::updateChats() {
-  auto chatMessages = m_dbPtr->getChatMessages();
+  auto chatMessages = _dbPtr->getChatMessages();
   QString chat;
   for (const auto &msg : chatMessages) {
     chat.append(QString::fromStdString(msg) + '\n');
@@ -96,23 +99,23 @@ void MainWindow::updateChats() {
   }
 
   chat.clear();
-  auto privateMessages = m_dbPtr->getPrivateMessage(m_userId);
+  auto privateMessages = _dbPtr->getPrivateMessage(_userId);
   for (const auto &msg : privateMessages) {
-    if (msg.getSender() != m_userName.toStdString() &&
-        msg.getDest() != m_userId) {
+    if (msg.getSender() != _userName.toStdString() &&
+        msg.getDest() != _userId) {
       continue;
     }
     QString prefix;
-    if (m_userName.toStdString() == msg.getSender() &&
-        m_userId == msg.getDest()) {
+    if (_userName.toStdString() == msg.getSender() &&
+        _userId == msg.getDest()) {
       prefix = tr("self") + ": ";
-    } else if (m_userName.toStdString() == msg.getSender()) {
+    } else if (_userName.toStdString() == msg.getSender()) {
       prefix = tr("you to") + ": " +
                QString(" <%1>: ").arg(
-                   QString::fromStdString(m_dbPtr->getUserName(msg.getDest())));
+                   QString::fromStdString(_dbPtr->getUserName(msg.getDest())));
     } else {
-      prefix = QString("<%1>").arg(QString::fromStdString(
-                   m_dbPtr->getUserName(msg.getDest()))) +
+      prefix = QString("<%1>").arg(
+                   QString::fromStdString(_dbPtr->getUserName(msg.getDest()))) +
                tr(" to you: ");
     }
     chat.append(prefix + QString::fromStdString(msg.getText() + '\n'));
@@ -122,7 +125,7 @@ void MainWindow::updateChats() {
 }
 
 void MainWindow::on_actionNew_instance_triggered() {
-  auto w{createClient(m_dbPtr)};
+  auto w{createClient(_dbPtr)};
   if (w) {
     w->show();
   }

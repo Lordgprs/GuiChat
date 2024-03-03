@@ -1,15 +1,15 @@
 #include "Parsing.h"
 #include <string>
 
-using namespace std;
+// using namespace std;
 
-bool startWith(string tmpl, string &s) {
+bool startWith(std::string tmpl, std::string &s) {
   if (tmpl.length() > s.length())
     return false;
   return !s.compare(0, tmpl.length(), tmpl);
 }
 
-bool startWith(string tmpl, const char *s) {
+bool startWith(std::string tmpl, const char *s) {
   if (tmpl.empty())
     return false;
   //проверяем равенство каждого символа шаблона с символами строки
@@ -22,7 +22,7 @@ bool startWith(string tmpl, const char *s) {
   return true; //все символы прошли тест на равенство - значит различий нет
 }
 
-int findFirst(string tmpl, string &s) {
+int findFirst(std::string tmpl, std::string &s) {
   const char *ss = s.c_str();
   int index = -1;
   //ищем позицию начиная с которой встречается шаблон
@@ -37,28 +37,28 @@ int findFirst(string tmpl, string &s) {
   return index;
 }
 
-string splitBy(string tmpl, string &s) {
+std::string splitBy(std::string tmpl, std::string &s) {
   int index = findFirst(tmpl, s);
   if (index ==
       -1) //шаблона нет - перемещаем всё в вывод, очищаем исходную строку.
   {
-    string temp = s;
+    std::string temp = s;
     s.clear();
     return temp;
   }
-  string temp = s.substr(0, index);
+  std::string temp = s.substr(0, index);
   s.erase(0, index + tmpl.length());
   return temp;
 }
 
-void skipuntil(string tmpl, string &s) {
+void skipuntil(std::string tmpl, std::string &s) {
   int index = findFirst(tmpl, s);
   if (index == -1)
     s.clear();
   s.erase(0, index + tmpl.length());
 }
 
-string segment(string from, string to, string s) {
+std::string segment(std::string from, std::string to, std::string s) {
   skipuntil(from, s);
   return splitBy(to, s);
 }
@@ -69,12 +69,12 @@ bool isLetter(char c) {
   return ((c >= 'a') && (c <= 'z')) || ((c >= 'A') && (c <= 'Z'));
 }
 
-bool correctName(string s) {
+bool correctName(std::string s) {
   if (s.empty())
     return false;
   if (!isLetter(s[0]))
     return false;
-  for (string::iterator it = s.begin(); it != s.end(); ++it) {
+  for (std::string::iterator it = s.begin(); it != s.end(); ++it) {
     char c = (*it);
     if ((!isDigit(c)) && (!isLetter(c)) && (c != '_'))
       return false;

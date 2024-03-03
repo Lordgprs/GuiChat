@@ -5,17 +5,17 @@ User::User() : _id(0), _login(""), _username(""), _passwordHash()
 {
 }
 
-User::User(string username, Hash passHash) :_login(username), _username(username), _passwordHash(passHash), _id(++userCounter)
+User::User(std::string username, Hash passHash) :_id(++userCounter), _login(username), _username(username), _passwordHash(passHash)
 {
 }
 
-int User::checklogin(const string& login, const Hash& passHash) const
+int User::checklogin(const std::string& login, const Hash& passHash) const
 {
 	if ((_login == login) && (_passwordHash == passHash)) return _id;
 	return -1;
 }
 
-string& User::getuserName() 
+std::string& User::getuserName()
 {
 	return _username;
 }

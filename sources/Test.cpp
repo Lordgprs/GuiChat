@@ -1,9 +1,10 @@
 ﻿#include "CommandLineInterface.h"
 #include "mainwindow.h"
+#include "qmessagebox.h"
 #include <QApplication>
 #include <QTranslator>
 #include <iostream>
-using namespace std;
+// using namespace std;
 
 int main(int argc, char *argv[]) {
   QApplication a(argc, argv);
@@ -37,8 +38,13 @@ int main(int argc, char *argv[]) {
   //  QTranslator defaultTranslator;
   //  defaultTranslator.load("translations/qt_ru.qm");
   //  a.installTranslator(&defaultTranslator);
-
-  auto w{MainWindow::createClient()};
+  MainWindow *w{nullptr};
+  try {
+    w = MainWindow::createClient();
+  } catch (const std::invalid_argument &e) {
+    QMessageBox::critical(nullptr, QObject::tr("Fatal error"),
+                          QObject::tr(e.what()));
+  }
   if (w) {
     w->show();
   } else {
