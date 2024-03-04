@@ -1,4 +1,4 @@
-﻿#include "CommandLineInterface.h"
+﻿//#include "CommandLineInterface.h"
 #include "DbException.h"
 #include "mainwindow.h"
 #include "qmessagebox.h"

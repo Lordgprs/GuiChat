@@ -1,6 +1,6 @@
 #pragma once
+
 #include "Message.h"
-#include "User.h"
 #include <QString>
 #include <QtSql/QSqlDatabase>
 #include <memory>
@@ -10,7 +10,6 @@
 #include <vector>
 
 class Database final {
-  std::vector<User> _users;
   std::vector<Message> _messages;
   std::unordered_map<std::string, int> _usersMapByName;
   int searchUserByName(std::string);

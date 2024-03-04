@@ -3,4 +3,9 @@ build/*
 deploy/*
 *.user
 /.vs
-/out/build/x64-Debug (default)
+bin/client
+bin/server
+lib/*.a
+lib/*.lib
+lib/*.so
+

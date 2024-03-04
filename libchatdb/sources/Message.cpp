@@ -1,11 +1,9 @@
 #include "Message.h"
+
 int Message::num = 0;
 int Message::messageCounter = 0;
 //сообщение в чат
-const std::string &Message::getTime() const
-{
-  return _time;
-}
+const std::string &Message::getTime() const { return _time; }
 
 Message::Message() : _id(num), _sender(""), _destID(0), _text("") {}
 Message::Message(const std::string &writer, const std::string &text,

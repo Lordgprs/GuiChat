@@ -1,8 +1,6 @@
 #include "Parsing.h"
 #include <string>
 
-// using namespace std;
-
 bool startWith(std::string tmpl, std::string &s) {
   if (tmpl.length() > s.length())
     return false;

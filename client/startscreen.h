@@ -2,6 +2,7 @@
 #define STARTSCREEN_H
 
 #include "Database.h"
+#include "Settings.h"
 #include <QDialog>
 #include <QSettings>
 #include <memory>
@@ -9,13 +10,6 @@
 namespace Ui {
 class StartScreen;
 }
-
-struct ConfigurationParameters {
-  QString db_name;
-  QString db_host;
-  QString db_user;
-  QString db_password;
-};
 
 class StartScreen : public QDialog {
   Q_OBJECT
@@ -38,11 +32,10 @@ public slots:
   void onRejectRequested();
 
 private:
-  void loadSettings();
   Ui::StartScreen *ui;
   int _userId;
   QString _userName;
-  ConfigurationParameters _params;
+  Settings::ConfigurationParameters _params;
   std::shared_ptr<Database> _dbPtr;
   std::shared_ptr<QSettings> _settings;
   const char *const CONFIG_FILE_NAME{"chat.conf"};

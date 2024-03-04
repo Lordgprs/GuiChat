@@ -6,7 +6,7 @@
 StartScreen::StartScreen(std::shared_ptr<Database> dbPtr, QWidget *parent)
     : QDialog(parent), ui(new Ui::StartScreen) {
   ui->setupUi(this);
-  loadSettings();
+  _settings = Settings::loadSettings(CONFIG_FILE_NAME, _params);
   if (dbPtr) {
     _dbPtr = dbPtr;
   } else {
@@ -51,36 +51,3 @@ std::shared_ptr<Database> StartScreen::getDatabase() const { return _dbPtr; }
 const QString &StartScreen::userName() const { return _userName; }
 
 int StartScreen::userId() const { return _userId; }
-
-void StartScreen::loadSettings() {
-  _settings =
-      std::make_shared<QSettings>(CONFIG_FILE_NAME, QSettings::IniFormat);
-  if (_settings->status() != QSettings::NoError) {
-    throw std::invalid_argument{"error while opening configuration file"};
-  }
-  //  _settings->beginGroup("General");
-  auto db_name{_settings->value("DBName")};
-  if (!db_name.isValid()) {
-    throw std::invalid_argument{
-        "cannot retrieve database name, check configuration file"};
-  }
-  _params.db_name = db_name.value<QString>();
-  auto db_host{_settings->value("DBHost")};
-  if (!db_host.isValid()) {
-    throw std::invalid_argument{
-        "cannot retrieve database server hostname, check configuration file"};
-  }
-  _params.db_host = db_host.value<QString>();
-  auto db_user{_settings->value("DBUser")};
-  if (!db_user.isValid()) {
-    throw std::invalid_argument{
-        "cannot retrieve database user name, check configuration file"};
-  }
-  _params.db_user = db_user.value<QString>();
-  auto db_password{_settings->value("DBPassword")};
-  if (!db_password.isValid()) {
-    throw std::invalid_argument{
-        "cannot retrieve database user password, check configuration file"};
-  }
-  _params.db_password = db_password.value<QString>();
-}

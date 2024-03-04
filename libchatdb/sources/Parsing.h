@@ -1,8 +1,6 @@
 #pragma once
 #include <string>
 
-// using namespace std;
-
 /*
   проверяет, что строка начинается с шаблона
 */

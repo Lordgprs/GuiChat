@@ -70,18 +70,20 @@ std::string Database::getUserName(int userId) const {
 
 Database::Database(const QString &db_name, const QString &db_host,
                    const QString &db_user, const QString &db_password)
-    : _users{}, _messages{}, _db_name{db_name}, _db_host{db_host},
-      _db_user{db_user}, _db_password{db_password} {
+    : _messages{}, _db_name{db_name}, _db_host{db_host}, _db_user{db_user},
+      _db_password{db_password} {
   static auto db{QSqlDatabase::addDatabase("QPSQL")};
-  _db = &db;
-  _db->setDatabaseName(_db_name);
-  _db->setHostName(_db_host);
-  _db->setUserName(_db_user);
-  _db->setPassword(_db_password);
-  auto isOpen{_db->open()};
+
+  db.setDatabaseName(_db_name);
+  db.setHostName(_db_host);
+  db.setUserName(_db_user);
+  db.setPassword(_db_password);
+  db.setConnectOptions("connect_timeout=3");
+  auto isOpen{db.open()};
   if (!isOpen) {
     throw std::invalid_argument{"cannot connect to database"};
   }
+  _db = &db;
 }
 
 Database::~Database() {
