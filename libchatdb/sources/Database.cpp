@@ -154,8 +154,9 @@ int Database::checkPassword(std::string username, std::string password) {
   std::scoped_lock sl{_mtx};
   int result = -1;
   QSqlQuery query(*_db);
-  query.prepare("SELECT id FROM users WHERE name = ? AND password_hash = "
-                "encode(sha256(?), 'hex')");
+  query.prepare("SELECT id FROM users WHERE active AND "
+                "name = ? AND "
+                "password_hash = encode(sha256(?), 'hex')");
   query.addBindValue(QString::fromStdString(username));
   query.addBindValue(QString::fromStdString(password));
   query.setForwardOnly(true);
@@ -294,7 +295,7 @@ std::vector<std::string> Database::getChatMessages() {
   query.prepare("SELECT "
                 "users.name, "
                 "messages.message_text, "
-                "to_char(messages.sent, 'HH24:MI') "
+                "to_char(messages.sent, 'DD.MM HH24:MI') "
                 "FROM messages "
                 "JOIN users ON users.id = messages.sender_id "
                 "WHERE messages.receiver_id IS NULL");

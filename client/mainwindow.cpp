@@ -55,6 +55,7 @@ void MainWindow::on_messageLineEdit_returnPressed() {
 void MainWindow::on_sendMessageButton_clicked() {
   _dbPtr->addChatMessage(_userName.toStdString(),
                          ui->messageLineEdit->text().toStdString());
+  ui->messageLineEdit->clear();
 }
 
 void MainWindow::on_privateMessageSendButton_clicked() {
@@ -83,6 +84,7 @@ void MainWindow::on_privateMessageSendButton_clicked() {
                               userListWgt->currentItem()->text().toStdString(),
                               ui->messageLineEdit->text().toStdString());
   }
+  ui->messageLineEdit->clear();
 }
 
 void MainWindow::updateChats() {
