@@ -46,7 +46,7 @@ void MainWindow::refreshMessageList() {
 }
 
 void MainWindow::refreshUserList() {
-  auto users{_dbPtr->getUserList()};
+  auto users{_dbPtr->getUserList(true)};
   if (users == _users) {
     return;
   }
@@ -56,9 +56,11 @@ void MainWindow::refreshUserList() {
   ui->lstUsers->clear();
   _users_listitems.clear();
   for (const auto &user : users) {
-    ui->lstUsers->addItem(QString::fromStdString(user));
-    _users_listitems.insert(
-        {list_item_index++, _dbPtr->searchUserByName(user)});
+    ui->lstUsers->addItem(QString::fromStdString(user.getName()));
+    if (!user.isActive()) {
+      ui->lstUsers->item(list_item_index)->setForeground(Qt::gray);
+    }
+    _users_listitems.insert({list_item_index++, user});
   }
 }
 
@@ -79,8 +81,13 @@ void MainWindow::on_lstMessages_itemSelectionChanged() {
 void MainWindow::on_lstUsers_itemSelectionChanged() {
   bool hasSelection{ui->lstUsers->currentItem()->isSelected()};
   if (hasSelection) {
-    ui->btnDisableUser->setDisabled(false);
     ui->btnRemoveUser->setDisabled(false);
+    ui->btnDisableUser->setDisabled(false);
+    if (_users.at(ui->lstUsers->currentIndex().row()).isActive()) {
+      ui->btnDisableUser->setText(tr("Disable"));
+    } else {
+      ui->btnDisableUser->setText(tr("Enable"));
+    }
   } else {
     ui->btnDisableUser->setDisabled(true);
     ui->btnRemoveUser->setDisabled(true);
@@ -99,19 +106,27 @@ void MainWindow::on_btnRemoveMessage_clicked() {
 }
 
 void MainWindow::on_btnDisableUser_clicked() {
-  auto answer{
-      QMessageBox::question(this, tr("Disable user"), tr("Are you sure?"))};
+  bool currentState{_users.at(ui->lstUsers->currentIndex().row()).isActive()};
+  QString dialog_title{currentState ? tr("Disable user") : tr("Enable user")};
+  auto answer{QMessageBox::question(this, dialog_title, tr("Are you sure?"))};
   if (answer == QMessageBox::Yes) {
-    _dbPtr->disableUser(_users_listitems[ui->lstUsers->currentIndex().row()]);
-    refreshUserList();
+    if (currentState) {
+      _dbPtr->disableUser(
+          _users_listitems.at(ui->lstUsers->currentIndex().row()).getId());
+    } else {
+      _dbPtr->enableUser(
+          _users_listitems.at(ui->lstUsers->currentIndex().row()).getId());
+    }
   }
+  refreshUserList();
 }
 
 void MainWindow::on_btnRemoveUser_clicked() {
   auto answer{
       QMessageBox::question(this, tr("Remove user"), tr("Are you sure?"))};
   if (answer == QMessageBox::Yes) {
-    _dbPtr->removeUser(_users_listitems[ui->lstUsers->currentIndex().row()]);
+    _dbPtr->removeUser(
+        _users_listitems.at(ui->lstUsers->currentIndex().row()).getId());
     refreshUserList();
   }
 }

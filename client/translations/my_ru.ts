@@ -108,18 +108,18 @@
     <message>
         <location filename="../sources/Test.cpp" line="26"/>
         <source>Fatal error</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Фатальная ошибка</translation>
     </message>
     <message>
         <location filename="../sources/Test.cpp" line="29"/>
         <location filename="../sources/Test.cpp" line="45"/>
         <source>Database error</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Ошибка СУБД</translation>
     </message>
     <message>
         <location filename="../sources/Test.cpp" line="32"/>
         <source>Unknown error</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Неизвестная ошибка</translation>
     </message>
 </context>
 <context>

@@ -47,7 +47,7 @@ endif (CMAKE_COMPILER_IS_GNUCXX)
 find_package(Qt5 COMPONENTS ${Qt5Modules} REQUIRED LinguistTools)
 
 set(TS_FILES
-    ${PROJECT_SOURCE_DIR}/translations/my_ru.ts
+    ${PROJECT_SOURCE_DIR}/translations/server_ru.ts
 )
 file(GLOB_RECURSE TS_SOURCES "*.cpp" "*.h" "*.ui")
 add_custom_target(server_translations)

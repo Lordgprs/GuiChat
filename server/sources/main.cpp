@@ -2,10 +2,20 @@
 
 #include <QApplication>
 #include <QMessageBox>
+#include <QTranslator>
 #include <variant>
 
 int main(int argc, char *argv[]) {
   QApplication a(argc, argv);
+
+  QTranslator myappTranslator;
+  myappTranslator.load("translations/server_ru.qm");
+  a.installTranslator(&myappTranslator);
+
+  QTranslator qtTranslator;
+  qtTranslator.load("translations/server_ru.qm");
+  a.installTranslator(&qtTranslator);
+
   std::variant<MainWindow, std::monostate> w;
   try {
     w.emplace<MainWindow>();

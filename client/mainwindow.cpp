@@ -73,7 +73,7 @@ void MainWindow::on_privateMessageSendButton_clicked() {
 
   auto userList{_dbPtr->getUserList()};
   for (const auto &user : userList) {
-    userListWgt->addItem(QString::fromStdString(user));
+    userListWgt->addItem(QString::fromStdString(user.getName()));
   }
   userListWgt->setCurrentRow(0);
 

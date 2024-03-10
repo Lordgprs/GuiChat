@@ -3,6 +3,7 @@
 
 #include "Database.h"
 #include "Settings.h"
+#include "User.h"
 #include <QMainWindow>
 #include <chrono>
 
@@ -48,7 +49,7 @@ private:
   Settings::ConfigurationParameters _params;
   std::map<int, int> _messages_listitems;
   std::vector<Message> _messages;
-  std::map<int, int> _users_listitems;
-  std::vector<std::string> _users;
+  std::map<int, User> _users_listitems;
+  std::vector<User> _users;
 };
 #endif // MAINWINDOW_H

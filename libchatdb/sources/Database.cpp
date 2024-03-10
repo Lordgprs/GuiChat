@@ -29,20 +29,28 @@ int Database::searchUserByName(std::string username) {
   return uid;
 }
 
-std::vector<std::string> Database::getUserList() const {
+std::vector<User> Database::getUserList(bool including_inactive) const {
   if (!_db) {
     throw DbException{"database connection is not established"};
   }
   std::scoped_lock sl{_mtx};
-  std::vector<std::string> userList;
+  std::vector<User> userList;
   QSqlQuery query(*_db);
   query.setForwardOnly(true);
-  bool sql_result{query.exec("SELECT name FROM users ORDER BY id")};
+  bool sql_result{false};
+  if (including_inactive) {
+    sql_result = query.exec("SELECT id, name, active FROM users ORDER BY id");
+  } else {
+    sql_result = query.exec(
+        "SELECT id, name, active FROM users WHERE active ORDER BY id");
+  }
   if (!sql_result) {
     throw DbException{"can not get user list"};
   }
   while (query.next()) {
-    userList.push_back(query.value(0).value<QString>().toStdString());
+    userList.emplace_back(query.value(0).value<int>(),
+                          query.value(1).value<QString>().toStdString(),
+                          query.value(2).value<bool>());
   }
 
   return userList;
@@ -208,22 +216,70 @@ bool Database::addPrivateMessage(std::string sender, std::string target,
 }
 
 bool Database::removeMessage(int id) const {
+  if (id < 0) {
+    return false;
+  }
+
   qWarning() << "Removing message #" << id;
+  QSqlQuery query(*_db);
+  query.prepare("DELETE FROM messages WHERE id = ?");
+  query.addBindValue(id);
+  bool sql_result{query.exec()};
+  if (!sql_result || query.numRowsAffected() != 1) {
+    return false;
+  }
+
   return true;
 }
 
 bool Database::removeUser(int id) const {
+  if (id < 0) {
+    return false;
+  }
+
   qWarning() << "Removing user #" << id;
+  QSqlQuery query(*_db);
+  query.prepare("DELETE FROM users WHERE id = ?");
+  query.addBindValue(id);
+  bool sql_result{query.exec()};
+  if (!sql_result || query.numRowsAffected() != 1) {
+    return false;
+  }
+
   return true;
 }
 
 bool Database::disableUser(int id) const {
+  if (id < 0) {
+    return false;
+  }
+
   qWarning() << "Disabling user #" << id;
+  QSqlQuery query(*_db);
+  query.prepare("UPDATE users SET active = false WHERE id = ?");
+  query.addBindValue(id);
+  bool sql_result{query.exec()};
+  if (!sql_result || query.numRowsAffected() != 1) {
+    return false;
+  }
+
   return true;
 }
 
 bool Database::enableUser(int id) const {
+  if (id < 0) {
+    return false;
+  }
+
   qWarning() << "Enabling user #" << id;
+  QSqlQuery query(*_db);
+  query.prepare("UPDATE users SET active = true WHERE id = ?");
+  query.addBindValue(id);
+  bool sql_result{query.exec()};
+  if (!sql_result || query.numRowsAffected() != 1) {
+    return false;
+  }
+
   return true;
 }
 

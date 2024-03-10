@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Message.h"
+#include "User.h"
 #include <QString>
 #include <QtSql/QSqlDatabase>
 #include <memory>
@@ -21,7 +22,7 @@ class Database final {
 
 public:
   int searchUserByName(std::string);
-  std::vector<std::string> getUserList() const;
+  std::vector<User> getUserList(bool including_inactive = false) const;
   std::string getUserName(int userId) const;
   Database(const QString &db_name, const QString &db_host,
            const QString &db_user, const QString &db_password);
