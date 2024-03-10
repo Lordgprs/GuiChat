@@ -1,21 +1,25 @@
 #include "Message.h"
 
-int Message::num = 0;
-int Message::messageCounter = 0;
 //сообщение в чат
 const std::string &Message::getTime() const { return _time; }
 
-Message::Message() : _id(num), _sender(""), _destID(0), _text("") {}
-Message::Message(const std::string &writer, const std::string &text,
+Message::Message() : _sender(""), _destID(0), _text("") {}
+Message::Message(int id, const std::string &writer, const std::string &text,
                  const std::string &time)
-    : _id(++num), _sender(writer), _destID(-1), _text(text), _time{time} {
-  messageCounter++;
-}
+    : _id(id), _sender(writer), _destID(-1), _text(text), _time{time} {}
 //личное сообщение
-Message::Message(const std::string &writer, int target, const std::string &text,
-                 const std::string &time)
-    : _id(++num), _sender(writer), _destID(target), _text(text), _time{time} {
-  messageCounter++;
+Message::Message(int id, const std::string &writer, int target,
+                 const std::string &text, const std::string &time)
+    : _id(id), _sender(writer), _destID(target), _text(text), _time{time} {}
+
+bool Message::operator==(const Message &other) const {
+  bool result{true};
+  //  result = result && other._id == _id;
+  result = result && other._destID == _destID;
+  result = result && other._sender == _sender;
+  result = result && other._text == other._text;
+  result = result && other._time == other._time;
+  return result;
 }
 
 bool Message::searchByTarget(int n) const { return (_destID == n); }

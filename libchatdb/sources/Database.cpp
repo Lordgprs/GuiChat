@@ -1,6 +1,7 @@
 ﻿#include "Database.h"
 #include "DbException.h"
 #include "Parsing.h"
+#include <QDebug>
 #include <QMessageBox>
 #include <QSqlQuery>
 #include <QVariant>
@@ -10,7 +11,7 @@ int Database::searchUserByName(std::string username) {
   if (!_db) {
     throw DbException{"database connection is not established"};
   }
-  std::shared_lock sl{_mtx};
+  std::scoped_lock sl{_mtx};
   int uid{-1};
   QSqlQuery query{*_db};
 
@@ -32,7 +33,7 @@ std::vector<std::string> Database::getUserList() const {
   if (!_db) {
     throw DbException{"database connection is not established"};
   }
-  std::shared_lock sl{_mtx};
+  std::scoped_lock sl{_mtx};
   std::vector<std::string> userList;
   QSqlQuery query(*_db);
   query.setForwardOnly(true);
@@ -51,7 +52,7 @@ std::string Database::getUserName(int userId) const {
   if (!_db) {
     throw DbException{"database connection is not established"};
   }
-  std::shared_lock sl{_mtx};
+  std::scoped_lock sl{_mtx};
   QString result;
   QSqlQuery query(*_db);
   query.prepare("SELECT name FROM users WHERE id = ?");
@@ -96,7 +97,7 @@ int Database::addUser(std::string username, std::string password) {
   if (!_db) {
     throw DbException{"database connection is not established"};
   }
-  std::unique_lock ul{_mtx};
+  std::scoped_lock sl{_mtx};
   bool sql_result;
   int userId{-2};
   if (!correctName(username)) {
@@ -142,7 +143,7 @@ int Database::checkPassword(std::string username, std::string password) {
   if (!_db) {
     throw DbException{"database connection is not established"};
   }
-  std::shared_lock sl{_mtx};
+  std::scoped_lock sl{_mtx};
   int result = -1;
   QSqlQuery query(*_db);
   query.prepare("SELECT id FROM users WHERE name = ? AND password_hash = "
@@ -168,7 +169,7 @@ bool Database::addChatMessage(std::string sender, std::string message) {
   if (senderId < 0) {
     return false;
   }
-  std::unique_lock ul{_mtx};
+  std::scoped_lock sl{_mtx};
   QSqlQuery query(*_db);
   query.prepare("INSERT INTO messages (sender_id, message_text) "
                 "VALUES(?, ?)");
@@ -191,7 +192,7 @@ bool Database::addPrivateMessage(std::string sender, std::string target,
   if (senderId < 0 || targetId < 0) {
     return false;
   }
-  std::unique_lock ul{_mtx};
+  std::scoped_lock sl{_mtx};
   QSqlQuery query(*_db);
   query.prepare("INSERT INTO messages (sender_id, receiver_id, message_text) "
                 "VALUES(?, ?, ?)");
@@ -206,11 +207,31 @@ bool Database::addPrivateMessage(std::string sender, std::string target,
   return true;
 }
 
+bool Database::removeMessage(int id) const {
+  qWarning() << "Removing message #" << id;
+  return true;
+}
+
+bool Database::removeUser(int id) const {
+  qWarning() << "Removing user #" << id;
+  return true;
+}
+
+bool Database::disableUser(int id) const {
+  qWarning() << "Disabling user #" << id;
+  return true;
+}
+
+bool Database::enableUser(int id) const {
+  qWarning() << "Enabling user #" << id;
+  return true;
+}
+
 std::vector<std::string> Database::getChatMessages() {
   if (!_db) {
     throw DbException{"database connection is not established"};
   }
-  std::shared_lock sl{_mtx};
+  std::scoped_lock sl{_mtx};
   std::vector<std::string> strings;
   QSqlQuery query(*_db);
   query.setForwardOnly(true);
@@ -234,26 +255,64 @@ std::vector<std::string> Database::getChatMessages() {
   return strings;
 }
 
-std::vector<Message> Database::getPrivateMessages(int userID) {
+std::vector<Message> Database::getAllMessages() {
   if (!_db) {
     throw DbException{"database connection is not established"};
   }
-  std::shared_lock sl{_mtx};
-  std::vector<Message> strings;
-  // int userID = searchUserByName(username);
+
+  std::scoped_lock sl{_mtx};
+  std::vector<Message> messages;
+
   QSqlQuery query(*_db);
   query.setForwardOnly(true);
   query.prepare("SELECT "
                 "users.name, "
                 "COALESCE(messages.receiver_id, -1), "
                 "messages.message_text, "
-                "to_char(messages.sent, 'HH24:MI') "
+                "to_char(messages.sent, 'DD.MM HH24:MI'), "
+                "messages.id "
+                "FROM messages "
+                "JOIN users ON users.id = messages.sender_id "
+                "ORDER BY messages.sent DESC");
+  bool sql_result{query.exec()};
+  if (!sql_result) {
+    throw DbException{"can not get private messages"};
+  }
+  while (query.next()) {
+    QString message = query.value(2).value<QString>() + ": <" +
+                      query.value(0).value<QString>() + "> " +
+                      query.value(1).value<QString>();
+    messages.emplace_back(query.value(4).value<int>(),
+                          query.value(0).value<QString>().toStdString(),
+                          query.value(1).value<int>(),
+                          query.value(2).value<QString>().toStdString(),
+                          query.value(3).value<QString>().toStdString());
+  }
+  return messages;
+}
+
+std::vector<Message> Database::getPrivateMessages(int userID) {
+  if (!_db) {
+    throw DbException{"database connection is not established"};
+  }
+  std::scoped_lock sl{_mtx};
+  std::vector<Message> strings;
+
+  QSqlQuery query(*_db);
+  query.setForwardOnly(true);
+  query.prepare("SELECT "
+                "users.name, "
+                "COALESCE(messages.receiver_id, -1), "
+                "messages.message_text, "
+                "to_char(messages.sent, 'DD.MM HH24:MI'), "
+                "messages.id "
                 "FROM messages "
                 "JOIN users ON users.id = messages.sender_id "
                 "WHERE messages.receiver_id = ? "
                 "OR "
                 "(messages.sender_id = ? AND "
-                "messages.receiver_id IS NOT NULL)");
+                "messages.receiver_id IS NOT NULL)"
+                "ORDER BY messages.sent DESC");
   query.addBindValue(userID);
   query.addBindValue(userID);
   bool sql_result{query.exec()};
@@ -264,7 +323,8 @@ std::vector<Message> Database::getPrivateMessages(int userID) {
     QString message = query.value(2).value<QString>() + ": <" +
                       query.value(0).value<QString>() + "> " +
                       query.value(1).value<QString>();
-    strings.emplace_back(query.value(0).value<QString>().toStdString(),
+    strings.emplace_back(query.value(4).value<int>(),
+                         query.value(0).value<QString>().toStdString(),
                          query.value(1).value<int>(),
                          query.value(2).value<QString>().toStdString(),
                          query.value(3).value<QString>().toStdString());
