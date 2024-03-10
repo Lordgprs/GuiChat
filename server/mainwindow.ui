@@ -19,6 +19,12 @@
   <property name="windowTitle">
    <string>Administrator panel</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">QWidget {background-color: #003366; color: #EEEEEE}
+QPushButton {background-color: #0066CC;}
+QListWidget{background-color: #0066CC;}
+QTextBrpwser{background-color: #0066CC;}</string>
+  </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>

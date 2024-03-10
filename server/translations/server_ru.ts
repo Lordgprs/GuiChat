@@ -5,39 +5,39 @@
     <name>MainWindow</name>
     <message>
         <location filename="../mainwindow.ui" line="20"/>
-        <location filename="../mainwindow.ui" line="49"/>
+        <location filename="../mainwindow.ui" line="55"/>
         <source>Administrator panel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="35"/>
+        <location filename="../mainwindow.ui" line="41"/>
         <source>Refresh</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="63"/>
+        <location filename="../mainwindow.ui" line="69"/>
         <source>Users:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="70"/>
+        <location filename="../mainwindow.ui" line="76"/>
         <source>Messages:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="80"/>
+        <location filename="../mainwindow.ui" line="86"/>
         <location filename="../mainwindow.cpp" line="99"/>
         <source>Remove message</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="95"/>
+        <location filename="../mainwindow.ui" line="101"/>
         <location filename="../mainwindow.cpp" line="87"/>
         <source>Disable</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="105"/>
+        <location filename="../mainwindow.ui" line="111"/>
         <location filename="../mainwindow.cpp" line="126"/>
         <source>Remove user</source>
         <translation type="unfinished"></translation>

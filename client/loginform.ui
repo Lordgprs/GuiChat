@@ -13,6 +13,14 @@
   <property name="windowTitle">
    <string>Login to chat</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">QWidget {background-color: #003366; color: #EEEEEE}
+QPushButton {background-color: #0066CC;}
+QListWidget{background-color: #0066CC;}
+QTextBrowser{background-color: #0066CC;}
+QLineEdit{background-color: #0066CC;}
+</string>
+  </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <layout class="QFormLayout" name="formLayout">

@@ -9,17 +9,17 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../loginform.ui" line="22"/>
+        <location filename="../loginform.ui" line="30"/>
         <source>Login: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../loginform.ui" line="29"/>
+        <location filename="../loginform.ui" line="37"/>
         <source>Password: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../loginform.ui" line="70"/>
+        <location filename="../loginform.ui" line="78"/>
         <source>Registration</source>
         <translation type="unfinished"></translation>
     </message>
@@ -42,32 +42,32 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="23"/>
+        <location filename="../mainwindow.ui" line="31"/>
         <source>Your message:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="33"/>
+        <location filename="../mainwindow.ui" line="41"/>
         <source>Send to all</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="40"/>
+        <location filename="../mainwindow.ui" line="48"/>
         <source>Send private</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="82"/>
+        <location filename="../mainwindow.ui" line="90"/>
         <source>Main menu</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="92"/>
+        <location filename="../mainwindow.ui" line="100"/>
         <source>New instance...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="97"/>
+        <location filename="../mainwindow.ui" line="105"/>
         <source>Close</source>
         <translation type="unfinished"></translation>
     </message>
@@ -114,22 +114,22 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../registrationform.ui" line="22"/>
+        <location filename="../registrationform.ui" line="30"/>
         <source>Login: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../registrationform.ui" line="29"/>
+        <location filename="../registrationform.ui" line="37"/>
         <source>Password: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../registrationform.ui" line="36"/>
+        <location filename="../registrationform.ui" line="44"/>
         <source>Confirm password: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../registrationform.ui" line="84"/>
+        <location filename="../registrationform.ui" line="92"/>
         <source>Login</source>
         <translation type="unfinished"></translation>
     </message>
